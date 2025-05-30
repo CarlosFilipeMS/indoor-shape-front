@@ -20,23 +20,30 @@ export default function FichaForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      await axios.post("http://localhost:8080/fichas", {
-        ...formData,
-        altura: formData.altura.replace(",", "."),
-        peso: formData.peso.replace(",", "."),
+  try {
+    // Primeiro, salva a ficha
+    await axios.post("http://localhost:8080/fichas", {
+      ...formData,
+      altura: formData.altura.replace(",", "."),
+      peso: formData.peso.replace(",", "."),
     });
-      alert("Ficha enviada com sucesso!");
-      navigate("/qrcode"); // ou qualquer rota de sucesso
-    } catch (error: any) {
-    console.error("Erro ao enviar ficha:", error.response?.data || error.message);
-    alert("Erro ao enviar ficha: " + (error.response?.data?.message || error.message));
-    }
 
-  };
+    // Depois, cria a preferência
+    const response = await axios.post("http://localhost:8080/pagamento/criar-preferencia");
+
+    const preferenceId = response.data.preferenceId;
+
+    // Redireciona para o checkout do Mercado Pago
+    window.location.href = `https://www.mercadopago.com.br/checkout/v1/redirect?preference-id=${preferenceId}`;
+  } catch (error: any) {
+    console.error("Erro:", error.response?.data || error.message);
+    alert("Erro: " + (error.response?.data?.message || error.message));
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#fbfbf4] flex flex-col items-center justify-center p-4 relative rounded-2xl">
