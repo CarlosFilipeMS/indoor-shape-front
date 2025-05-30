@@ -134,7 +134,7 @@ export default function FichaForm() {
           type="submit"
           className="w-full bg-[#bde253] text-[#0d273f] font-semibold py-3 rounded-lg hover:brightness-110 transition"
         >
-          Enviar ficha
+          Finalizar
         </button>
       </form>
     </div>
