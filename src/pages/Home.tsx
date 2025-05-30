@@ -1,5 +1,4 @@
 // src/pages/Home.jsx
-import React from "react";
 import logo1 from '../assets/logo1.png';
 import { Link } from "react-router-dom";
 
