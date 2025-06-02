@@ -23,26 +23,28 @@ export default function FichaForm() {
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
-  try {
-    // Primeiro, salva a ficha
-    await axios.post("http://localhost:8080/fichas", {
-      ...formData,
-      altura: formData.altura.replace(",", "."),
-      peso: formData.peso.replace(",", "."),
-    });
+try {
+  // Salva a ficha
+  await axios.post("http://localhost:8080/fichas", {
+    ...formData,
+    altura: formData.altura.replace(",", "."),
+    peso: formData.peso.replace(",", "."),
+  });
 
-    // Depois, cria a preferência
-    const response = await axios.post("http://localhost:8080/pagamento/criar-preferencia");
+  // Cria a preferência de pagamento
+  const response = await axios.post("http://localhost:8080/pagamento/criar-preferencia");
 
-    const preferenceId = response.data.preferenceId;
+  // Pega a URL de redirecionamento direto do backend
+  const redirectUrl = response.data.url;
 
-    // Redireciona para o checkout do Mercado Pago
-    window.location.href = `https://www.mercadopago.com.br/checkout/v1/redirect?preference-id=${preferenceId}`;
-  } catch (error: any) {
-    console.error("Erro:", error.response?.data || error.message);
-    alert("Erro: " + (error.response?.data?.message || error.message));
-  }
-};
+  // Redireciona o usuário para o checkout do Mercado Pago
+  window.location.href = redirectUrl;
+
+} catch (error: any) {
+  console.error("Erro:", error.response?.data || error.message);
+  alert("Erro: " + (error.response?.data?.message || error.message));
+}
+
 
 
   return (
