@@ -25,27 +25,27 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 try {
   // Salva a ficha
-  await axios.post("http://localhost:8080/fichas", {
-    ...formData,
-    altura: formData.altura.replace(",", "."),
-    peso: formData.peso.replace(",", "."),
-  });
+    await axios.post("http://localhost:8080/fichas", {
+      ...formData,
+      altura: formData.altura.replace(",", "."),
+      peso: formData.peso.replace(",", "."),
+    });
 
-  // Cria a preferência de pagamento
-  const response = await axios.post("http://localhost:8080/pagamento/criar-preferencia");
+    // Cria a preferência de pagamento
+    const response = await axios.post("http://localhost:8080/pagamento/criar-preferencia");
 
-  // Pega a URL de redirecionamento direto do backend
-  const redirectUrl = response.data.url;
+    console.log("URL recebida:", response.data);
+    // Pega a URL de redirecionamento direto do backend
+    const redirectUrl = response.data.url;
 
-  // Redireciona o usuário para o checkout do Mercado Pago
-  window.location.href = redirectUrl;
+    // Redireciona o usuário para o checkout do Mercado Pago
+    window.location.href = redirectUrl;
 
-} catch (error: any) {
-  console.error("Erro:", error.response?.data || error.message);
-  alert("Erro: " + (error.response?.data?.message || error.message));
+  } catch (error: any) {
+    console.error("Erro:", error.response?.data || error.message);
+    alert("Erro: " + (error.response?.data?.message || error.message));
+  }
 }
-
-
 
   return (
     <div className="min-h-screen bg-[#fbfbf4] flex flex-col items-center justify-center p-4 relative rounded-2xl">
