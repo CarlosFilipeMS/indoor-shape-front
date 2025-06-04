@@ -1,10 +1,30 @@
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import axios from "axios";
+
 function PagamentoSucesso() {
+  const [searchParams] = useSearchParams();
+  const fichaId = searchParams.get("fichaId");
+
+  useEffect(() => {
+    if (fichaId) {
+      axios
+        .patch(`http://localhost:8080/fichas/${fichaId}/pago`)
+        .then(() => {
+          console.log("Status da ficha atualizado para PAGO");
+        })
+        .catch((err) => {
+          console.error("Erro ao atualizar ficha:", err);
+        });
+    }
+  }, [fichaId]);
+
   return (
     <div>
       <h2>Pagamento aprovado!</h2>
-      <p>Obrigado! Sua ficha será salva e você terá acesso ao treino.</p>
+      <p>Obrigado! Sua ficha foi salva e seu treino será enviado em até 24h.</p>
     </div>
-  )
+  );
 }
 
-export default PagamentoSucesso
+export default PagamentoSucesso;
