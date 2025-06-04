@@ -9,7 +9,7 @@ function PagamentoSucesso() {
   useEffect(() => {
     if (fichaId) {
       axios
-        .patch(`http://localhost:8080/fichas/${fichaId}/pago`)
+        .patch(`https://9cb1-177-37-171-220.ngrok-free.app/${fichaId}/pago`)
         .then(() => {
           console.log("Status da ficha atualizado para PAGO");
         })
