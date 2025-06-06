@@ -34,6 +34,9 @@ function PagamentoFalha() {
         <p className="text-1xl sm:text-2xl text-[#3c3c44] mb-4">
           Pagamento não concluído, tente novamente.
         </p>
+        <p className="text-1xl sm:text-1xl text-[#3c3c44] mb-4">
+          Contato para dúvidas: indoorshape@gmail.com
+        </p>
       </div>
 
     </div>
