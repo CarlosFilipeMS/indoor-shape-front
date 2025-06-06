@@ -9,16 +9,24 @@ function PagamentoSucesso() {
   const [searchParams] = useSearchParams();
   const fichaId = searchParams.get("fichaId");
   const navigate = useNavigate();
-  const [ficha, setFicha] = useState(null);
+
+  type FichaResponseDTO = {
+  id: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  status: "PENDENTE" | "PAGO";
+};
+  const [ficha, setFicha] = useState<FichaResponseDTO | null>(null);
 
 
 useEffect(() => {
   if (fichaId) {
     axios
-      .patch(`https://1d21-177-37-171-220.ngrok-free.app/fichas/${fichaId}/pago`)
+      .patch(`https://bd7c-177-37-171-220.ngrok-free.app/fichas/${fichaId}/pago`)
       .then(() => {
         console.log("Status atualizado, buscando dados...");
-        return axios.get(`https://1d21-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
+        return axios.get(`https://bd7c-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
       })
       .then((res) => {
         setFicha(res.data); // Atualiza o estado com os dados da ficha
@@ -60,15 +68,12 @@ useEffect(() => {
           Obrigado! Sua ficha foi salva com sucesso. Seu treino será enviado para o e-mail cadastrado em até 24 horas.
         </p>
         {ficha && (
-            <div className="mt-6 bg-white p-4 rounded-xl shadow-md text-[#0d273f] w-full max-w-md">
-              <h2 className="text-xl font-semibold mb-2">Resumo da ficha</h2>
-              <p><strong>Nome:</strong> {ficha.nome}</p>
-              <p><strong>Email:</strong> {ficha.email}</p>
-              <p><strong>Telefone:</strong> {ficha.telefone}</p>
-              <p><strong>Status:</strong> {ficha.status}</p>
-            </div>
-            )}
-
+          <div className="mt-4 text-[#0d273f]">
+            <p><strong>Nome:</strong> {ficha.nome}</p>
+            <p><strong>Email:</strong> {ficha.email}</p>
+            <p><strong>Status:</strong> {ficha.status}</p>
+          </div>
+        )}
       </div>
 
     </div>
