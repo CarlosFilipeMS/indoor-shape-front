@@ -52,7 +52,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <div className="min-h-screen bg-[#fbfbf4] flex flex-col items-center justify-center p-4 relative rounded-2xl">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/")}
         className="absolute top-4 left-4 text-[#0d273f] font-medium hover:underline"
       >
         ← Voltar
