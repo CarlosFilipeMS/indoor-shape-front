@@ -25,7 +25,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   try {
     // 1. Cria a ficha com status "PENDENTE"
-    const fichaResponse = await axios.post("https://bd7c-177-37-171-220.ngrok-free.app/fichas", {
+    const fichaResponse = await axios.post("https://0141-177-37-171-220.ngrok-free.app/fichas", {
       ...formData,
       altura: formData.altura.replace(",", "."),
       peso: formData.peso.replace(",", "."),
@@ -34,7 +34,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     const fichaId = fichaResponse.data.id;
 
     // 2. Cria preferência de pagamento com o ID da ficha
-    const response = await axios.post(`https://bd7c-177-37-171-220.ngrok-free.app/pagamento/criar-preferencia/${fichaId}`);
+    const response = await axios.post(`https://0141-177-37-171-220.ngrok-free.app/pagamento/criar-preferencia/${fichaId}`);
 
 
     const redirectUrl = response.data.initPoint;

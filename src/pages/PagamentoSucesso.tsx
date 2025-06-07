@@ -20,10 +20,10 @@ function PagamentoSucesso() {
   useEffect(() => {
     if (fichaId) {
       axios
-        .patch(`https://6105-177-37-171-220.ngrok-free.app/fichas/${fichaId}/pago`)
+        .patch(`https://0141-177-37-171-220.ngrok-free.app/fichas/${fichaId}/pago`)
         .then(() => {
           console.log("Status atualizado, buscando dados...");
-          return axios.get(`https://6105-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
+          return axios.get(`https://0141-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
         })
         .then((res) => {
           setFicha(res.data);
