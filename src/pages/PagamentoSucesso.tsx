@@ -1,37 +1,47 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import logo1 from '../assets/logo1.png';
 import axios from "axios";
+import logo1 from '../assets/logo1.png';
+
+type FichaResponseDTO = {
+  id: string;
+  nome: string;
+  email: string;
+  telefone: string;
+};
 
 function PagamentoSucesso() {
   const [searchParams] = useSearchParams();
   const fichaId = searchParams.get("fichaId");
   const navigate = useNavigate();
 
-  type FichaResponseDTO = {
-    id: string;
-    nome: string;
-    email: string;
-    telefone: string;
-  };
-
   const [ficha, setFicha] = useState<FichaResponseDTO | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (fichaId) {
-      axios
-        .patch(`https://0141-177-37-171-220.ngrok-free.app/fichas/${fichaId}/pago`)
-        .then(() => {
-          console.log("Status atualizado, buscando dados...");
-          return axios.get(`https://0141-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
-        })
-        .then((res) => {
-          setFicha(res.data);
-        })
-        .catch((err) => {
-          console.error("Erro ao atualizar ou buscar ficha:", err);
-        });
+    if (!fichaId) {
+      setError("ID da ficha não informado.");
+      setLoading(false);
+      return;
     }
+
+    const fetchFicha = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await axios.get<FichaResponseDTO>(`https://0141-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
+        setFicha(response.data);
+      } catch (err: any) {
+        console.error(err);
+        setError("Erro ao carregar dados da ficha. Tente novamente mais tarde.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFicha();
   }, [fichaId]);
 
   return (
@@ -54,12 +64,15 @@ function PagamentoSucesso() {
           Obrigado! Sua ficha foi salva com sucesso. Seu treino será enviado para o e-mail cadastrado em até 24 horas.
         </p>
 
-        {ficha && (
+        {loading && <p>Carregando os dados da ficha...</p>}
+
+        {error && <p className="text-red-600">{error}</p>}
+
+        {!loading && !error && ficha && (
           <div className="text-left text-[#0d273f] space-y-2">
             <p><strong>Nome:</strong> {ficha.nome}</p>
             <p><strong>Email:</strong> {ficha.email}</p>
             <p><strong>Telefone:</strong> {ficha.telefone}</p>
-            {/* status removido, pois não está mais no DTO */}
           </div>
         )}
       </div>
