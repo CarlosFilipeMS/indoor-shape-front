@@ -13,7 +13,6 @@ function PagamentoSucesso() {
     nome: string;
     email: string;
     telefone: string;
-    status: "PENDENTE" | "PAGO";
   };
 
   const [ficha, setFicha] = useState<FichaResponseDTO | null>(null);
@@ -21,10 +20,10 @@ function PagamentoSucesso() {
   useEffect(() => {
     if (fichaId) {
       axios
-        .patch(`https://bd7c-177-37-171-220.ngrok-free.app/fichas/${fichaId}/pago`)
+        .patch(`https://6105-177-37-171-220.ngrok-free.app/fichas/${fichaId}/pago`)
         .then(() => {
           console.log("Status atualizado, buscando dados...");
-          return axios.get(`https://bd7c-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
+          return axios.get(`https://6105-177-37-171-220.ngrok-free.app/fichas/${fichaId}`);
         })
         .then((res) => {
           setFicha(res.data);
@@ -59,7 +58,8 @@ function PagamentoSucesso() {
           <div className="text-left text-[#0d273f] space-y-2">
             <p><strong>Nome:</strong> {ficha.nome}</p>
             <p><strong>Email:</strong> {ficha.email}</p>
-            <p><strong>Status:</strong> <span className={ficha.status === 'PAGO' ? "text-green-600 font-bold" : "text-yellow-600 font-bold"}>{ficha.status}</span></p>
+            <p><strong>Telefone:</strong> {ficha.telefone}</p>
+            {/* status removido, pois não está mais no DTO */}
           </div>
         )}
       </div>
